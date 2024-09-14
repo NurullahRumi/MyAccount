@@ -16,4 +16,12 @@ public class IncomeService {
     public List<Income> getAll() {
         return incomeRepository.findAll();
     }
+
+    public Income getIncomeById(int id) {
+        return incomeRepository.findById(id).get();
+    }
+
+    public Income addIncome(Income income) {
+        return incomeRepository.save(income);
+    }
 }
