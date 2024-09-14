@@ -30,6 +30,8 @@ public class DemoSecurityConfig {
                 .roles("EMPLOYEE")
                 .build();
 
+        
+
 
         return new InMemoryUserDetailsManager(rumi, munni, nuju);
     }
