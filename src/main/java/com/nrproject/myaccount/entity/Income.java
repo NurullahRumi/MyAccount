@@ -14,13 +14,17 @@ public class Income {
     private Double amount;
     @Column(name = "remarks")
     private String remarks;
-    @Column(name = "month_id")
-    private int monthId;
+//    @Column(name = "month_id")
+//    private int monthId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "monthId")
+    private IncomeMonths incomeMonths;
 
     public Income(Double amount, String remarks, int monthId) {
         this.amount = amount;
         this.remarks = remarks;
-        this.monthId = monthId;
+        //this.monthId = monthId;
     }
 
     public Income() {}
@@ -49,13 +53,13 @@ public class Income {
         this.remarks = remarks;
     }
 
-    public int getMonthId() {
-        return monthId;
-    }
+//    public int getMonthId() {
+//        return monthId;
+//    }
 
-    public void setMonthId(int monthId) {
-        this.monthId = monthId;
-    }
+//    public void setMonthId(int monthId) {
+//        this.monthId = monthId;
+//    }
 
     @Override
     public String toString() {
@@ -63,7 +67,7 @@ public class Income {
                 "incomeId=" + incomeId +
                 ", amount=" + amount +
                 ", remarks='" + remarks + '\'' +
-                ", monthId=" + monthId +
+
                 '}';
     }
 }
