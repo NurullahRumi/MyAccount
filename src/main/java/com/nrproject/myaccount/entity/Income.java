@@ -2,6 +2,8 @@ package com.nrproject.myaccount.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "nr_income")
 public class Income {
@@ -14,6 +16,14 @@ public class Income {
     private Double amount;
     @Column(name = "remarks")
     private String remarks;
+    @Column(name = "create_by")
+    private String createdBy;
+    @Column(name = "create_dat")
+    private Date createdDate;
+    @Column(name = "update_by")
+    private String updatedBy;
+    @Column(name = "update_dat")
+    private Date updatedDate;
 //    @Column(name = "month_id")
 //    private int monthId;
 
@@ -21,10 +31,13 @@ public class Income {
     @JoinColumn(name = "monthId")
     private IncomeMonths incomeMonths;
 
-    public Income(Double amount, String remarks, int monthId) {
+    public Income(Double amount, String remarks, String createdBy, Date createdDate, String updatedBy, Date updatedDate) {
         this.amount = amount;
         this.remarks = remarks;
-        //this.monthId = monthId;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.updatedBy = updatedBy;
+        this.updatedDate = updatedDate;
     }
 
     public Income() {}
@@ -53,21 +66,47 @@ public class Income {
         this.remarks = remarks;
     }
 
-//    public int getMonthId() {
-//        return monthId;
-//    }
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-//    public void setMonthId(int monthId) {
-//        this.monthId = monthId;
-//    }
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
 
     @Override
     public String toString() {
         return "Income{" +
-                "incomeId=" + incomeId +
-                ", amount=" + amount +
+                "amount=" + amount +
                 ", remarks='" + remarks + '\'' +
-
+                ", createdBy='" + createdBy + '\'' +
+                ", createdDate=" + createdDate +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", updatedDate=" + updatedDate +
                 '}';
     }
 }

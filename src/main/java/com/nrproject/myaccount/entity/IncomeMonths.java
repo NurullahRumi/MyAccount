@@ -18,8 +18,7 @@ public class IncomeMonths {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "incomeMonths", cascade = CascadeType.ALL)
     private List<Income> incomeList;
 
-    public IncomeMonths(int monthId, String monthNam) {
-        this.monthId = monthId;
+    public IncomeMonths( String monthNam) {
         this.monthNam = monthNam;
     }
 
