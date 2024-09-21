@@ -10,8 +10,11 @@ import java.util.List;
 @Service
 public class IncomeMonthService {
 
-    @Autowired
-    private IncomeMonthRepository incomeMonthRepository;
+    private final IncomeMonthRepository incomeMonthRepository;
+
+    public IncomeMonthService(IncomeMonthRepository incomeMonthRepository) {
+        this.incomeMonthRepository = incomeMonthRepository;
+    }
 
     public List<IncomeMonths> getAll() {
         return incomeMonthRepository.findAll();
@@ -24,4 +27,9 @@ public class IncomeMonthService {
     public IncomeMonths save(IncomeMonths incomeMonths) {
         return incomeMonthRepository.save(incomeMonths);
     }
+
+    public void delete(IncomeMonths incomeMonths) {
+        incomeMonthRepository.delete(incomeMonths);
+    }
+    
 }
