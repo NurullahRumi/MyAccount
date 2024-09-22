@@ -1,11 +1,15 @@
 package com.nrproject.myaccount.controller;
 
 import com.nrproject.myaccount.entity.IncomeMonths;
+import com.nrproject.myaccount.exception.custom.DataTypeMismatchException;
 import com.nrproject.myaccount.exception.custom.NotFoundException;
 import com.nrproject.myaccount.service.IncomeMonthService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/incomemonth")
@@ -19,16 +23,23 @@ public class IncomeMonthController {
     }
 
 
+    @PostConstruct
+    public void init() {
+        theIncomeMonths = new ArrayList<>();
+        theIncomeMonths = incomeMonthService.getAll();
+    }
+
+
     @GetMapping("/incomemonths")
     public List<IncomeMonths> incomeMonths() {
-        return incomeMonthService.getAll();
+        return theIncomeMonths;
     }
 
     @GetMapping("/incomemonths/{id}")
     public IncomeMonths incomeMonths(@PathVariable int id) {
 
         // check the income month id list size
-        if( id >= 4 || id < 0){
+        if( id >= theIncomeMonths.size() || id < 0){
             throw new NotFoundException("Income month ID " + id + " not found");
         }
 
