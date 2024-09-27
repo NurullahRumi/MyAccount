@@ -21,7 +21,11 @@ public class IncomeService {
         return incomeRepository.findById(id).get();
     }
 
-    public Income addIncome(Income income) {
+    public Income save(Income income) {
         return incomeRepository.save(income);
+    }
+
+    public void deleteIncomeById(int id) {
+        incomeRepository.deleteById(id);
     }
 }

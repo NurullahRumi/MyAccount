@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.sql.DataSource;
 
 @Configuration
-public class DemoSecurityConfig {
+public class SecurityConfig {
 
     // add support for JDBC
 
@@ -46,14 +46,13 @@ public class DemoSecurityConfig {
                 configurer.requestMatchers( HttpMethod.GET, "/api/income/incomes").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.GET,"/api/income/incomes/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.POST,"/api/income/addIncome").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.GET, "/api/incomemonth/incomemonths").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.GET, "/api/incomemonth/incomemonths/**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.POST, "/api/incomemonth/addIncomeMonth").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/api/incomemonth/editIncomeMonth").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/incomemonth/deleteIncomeMonth").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/incomemonth/deleteIncomeMonthById/**").hasRole("ADMIN")
-
-
+                        .requestMatchers(HttpMethod.PUT,"/api/income/editIncome").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/api/month/months").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/api/month/months/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/month/addMonth").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/api/month/editMonth").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/month/deleteMonth").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/month/deleteMonthById/**").hasRole("ADMIN")
         );
 
         // use HTTP Basic auth

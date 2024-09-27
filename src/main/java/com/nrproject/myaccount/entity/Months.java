@@ -2,11 +2,9 @@ package com.nrproject.myaccount.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@Table(name = "nr_income_month")
-public class IncomeMonths {
+@Table(name = "nr_month")
+public class Months {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,14 +13,11 @@ public class IncomeMonths {
     @Column(name = "month_nam")
     private String monthNam;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "incomeMonths", cascade = CascadeType.ALL)
-    private List<Income> incomeList;
-
-    public IncomeMonths( String monthNam) {
+    public Months(String monthNam) {
         this.monthNam = monthNam;
     }
 
-    public IncomeMonths() {}
+    public Months() {}
 
     public int getMonthId() {
         return monthId;

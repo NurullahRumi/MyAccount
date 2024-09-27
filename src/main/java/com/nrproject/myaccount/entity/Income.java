@@ -24,20 +24,19 @@ public class Income {
     private String updatedBy;
     @Column(name = "update_dat")
     private Date updatedDate;
-//    @Column(name = "month_id")
-//    private int monthId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "monthId")
-    private IncomeMonths incomeMonths;
+    @OneToOne(targetEntity = Months.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "month_id",referencedColumnName = "month_id")
+    private Months months;
 
-    public Income(Double amount, String remarks, String createdBy, Date createdDate, String updatedBy, Date updatedDate) {
+    public Income(Double amount, String remarks, String createdBy, Date createdDate, String updatedBy, Date updatedDate, Months months) {
         this.amount = amount;
         this.remarks = remarks;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.updatedBy = updatedBy;
         this.updatedDate = updatedDate;
+        this.months = months;
     }
 
     public Income() {}
@@ -96,6 +95,14 @@ public class Income {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public Months getMonths() {
+        return months;
+    }
+
+    public void setMonths(Months months) {
+        this.months = months;
     }
 
     @Override
