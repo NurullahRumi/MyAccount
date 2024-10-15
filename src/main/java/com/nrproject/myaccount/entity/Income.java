@@ -7,7 +7,6 @@ import java.util.Date;
 @Entity
 @Table(name = "nr_income")
 public class Income {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "income_id")
