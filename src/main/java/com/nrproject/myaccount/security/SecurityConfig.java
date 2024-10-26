@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,12 +24,12 @@ public class SecurityConfig {
 
         // define a query to retrieve user by username
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select user_name, pw, enabled from nr_members where user_name =?;"
+                "select ur_id, pw, enabled from nr_users where ur_id =?;"
         );
 
         // define a query to retrieve role by username
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "select user_name, role from nr_roles where user_name = ?;"
+                "select ur_id, roles from nr_roles where ur_id = ?;"
         );
 
 
@@ -42,7 +43,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(configurer ->
+        return http.authorizeHttpRequests(configurer ->
                 configurer.requestMatchers( HttpMethod.GET, "/api/income/incomes").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.GET,"/api/income/incomes/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.POST,"/api/income/addIncome").hasRole("MANAGER")
@@ -53,48 +54,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/month/editMonth").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.DELETE, "/api/month/deleteMonth").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/month/deleteMonthById/**").hasRole("ADMIN")
-        );
-
-        // use HTTP Basic auth
-        http.httpBasic(Customizer.withDefaults());
-
+                        .requestMatchers(HttpMethod.POST,"/api/user/addUser").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"api/user/allUsers").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.POST,"/api/userRole/addUserRole").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/income/session").hasRole("EMPLOYEE")
+        )
+                .httpBasic(Customizer.withDefaults()) // use HTTP Basic auth
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // disable Cross Site Request Forgery (CSRF)
         // in general, not required for stateless REST APIs that use POST, PUT, DELETE and/or PATCH
+                .csrf(csrf -> csrf.disable())
+                .build();
 
-        http.csrf(csrf -> csrf.disable());
-
-        return http.build();
     }
-
-
-
-    /*   @Bean
-    public InMemoryUserDetailsManager userDetailsManager(){
-
-        UserDetails rumi = User.builder()
-                .username("rumi")
-                .password("{noop}test123")
-                .roles("EMPLOYEE", "MANAGER", "ADMIN")
-                .build();
-
-        UserDetails munni = User.builder()
-                .username("munni")
-                .password("{noop}test456")
-                .roles("EMPLOYEE", "MANAGER")
-                .build();
-
-        UserDetails nuju = User.builder()
-                .username("nuju")
-                .password("{noop}test789")
-                .roles("EMPLOYEE")
-                .build();
-
-
-
-
-        return new InMemoryUserDetailsManager(rumi, munni, nuju);
-    }
-*/
-
 
 }

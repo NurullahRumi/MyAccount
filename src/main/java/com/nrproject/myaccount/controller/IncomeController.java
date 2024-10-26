@@ -4,6 +4,7 @@ import com.nrproject.myaccount.entity.Income;
 import com.nrproject.myaccount.exception.custom.NotFoundException;
 import com.nrproject.myaccount.service.IncomeService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +23,22 @@ public class IncomeController {
         this.incomeService = incomeService;
     }
 
-    @PostConstruct
-    public void init() {
-        incomes = new ArrayList<>();
-        incomes = incomeService.getAll();
+//    @PostConstruct
+//    public void init() {
+//        incomes = new ArrayList<>();
+//        incomes = incomeService.getAll();
+//    }
+
+
+    @GetMapping("/session")
+    public String sessionId(HttpServletRequest request){
+        return "Session Id is: " + request.getSession().getId();
     }
 
     @GetMapping("/incomes")
     public List<Income> incomes() {
+        incomes = new ArrayList<>();
+        incomes = incomeService.getAll();
         if (incomes.size() == 0) {
             throw new NotFoundException("No Incomes found");
         }
@@ -54,8 +63,6 @@ public class IncomeController {
         newIncome.setRemarks(income.getRemarks());
         newIncome.setCreatedBy("test");
         newIncome.setCreatedDate(new Date());
-        newIncome.setUpdatedBy("WIP");
-        newIncome.setUpdatedDate(null);
         newIncome.setMonths(income.getMonths());
         return incomeService.save(newIncome);
     }

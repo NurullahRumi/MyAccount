@@ -30,10 +30,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handlerException(Exception e){
         ErrorResponse errorResponse = new ErrorResponse();
 
-        errorResponse.setMessage("Wrong type entry");
-
         errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setMessage(errorResponse.getMessage());
+        errorResponse.setMessage(e.getMessage());
         errorResponse.setTimestamp(System.currentTimeMillis());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
