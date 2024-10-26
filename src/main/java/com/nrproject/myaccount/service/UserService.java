@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.nrproject.myaccount.constant.EntityConstant.validateEmail;
+
 @Service
 public class UserService {
 
@@ -21,24 +23,7 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public static boolean validateEmail(String email){
 
-        if(email == null || email.isEmpty()){
-            return false;
-        }
-
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
-        Pattern pattern = Pattern.compile(emailRegex);
-
-        if(pattern.matcher(email).matches()){
-            return true;
-        }else {
-            return false;
-        }
-    }
 
     public List<Users> getAll(){
         return userRepository.findAll();
@@ -54,7 +39,7 @@ public class UserService {
         String email = users.getUserEmail();
         int index = email.indexOf('@');
         String genUserId = email.substring(0,index).toUpperCase();
-        
+
         Users userToDb = new Users();
         String encodedPasscode = this.passwordEncoder.encode(users.getPassCode());
         userToDb.setUserId(genUserId);
