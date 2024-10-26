@@ -3,6 +3,7 @@ package com.nrproject.myaccount.service;
 import com.nrproject.myaccount.entity.Users;
 import com.nrproject.myaccount.exception.custom.NotFoundException;
 import com.nrproject.myaccount.exception.custom.NotValidEmail;
+import com.nrproject.myaccount.exception.custom.RecordAlreadyExist;
 import com.nrproject.myaccount.repo.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +24,6 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-
-
     public List<Users> getAll(){
         return userRepository.findAll();
     }
@@ -39,6 +38,12 @@ public class UserService {
         String email = users.getUserEmail();
         int index = email.indexOf('@');
         String genUserId = email.substring(0,index).toUpperCase();
+
+        Users emailAlreadyExist = userRepository.getUsersByUserEmail(users.getUserEmail());
+        System.out.println(emailAlreadyExist);
+        if(emailAlreadyExist.getUserEmail() != null || !emailAlreadyExist.getUserEmail().isEmpty()){
+            throw new RecordAlreadyExist("Email Already exist - " + users.getUserEmail());
+        }
 
         Users userToDb = new Users();
         String encodedPasscode = this.passwordEncoder.encode(users.getPassCode());
