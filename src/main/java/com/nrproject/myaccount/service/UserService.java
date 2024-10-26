@@ -54,8 +54,7 @@ public class UserService {
         String email = users.getUserEmail();
         int index = email.indexOf('@');
         String genUserId = email.substring(0,index).toUpperCase();
-
-
+        
         Users userToDb = new Users();
         String encodedPasscode = this.passwordEncoder.encode(users.getPassCode());
         userToDb.setUserId(genUserId);
