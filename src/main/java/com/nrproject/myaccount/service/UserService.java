@@ -29,6 +29,25 @@ public class UserService {
 
     public Users addUser(Users users){
 
+        validateUser(users);
+        String email = users.getUserEmail();
+        int index = email.indexOf('@');
+        String genUserId = email.substring(0,index).toUpperCase();
+
+        Users userToDb = new Users();
+        String encodedPasscode = this.passwordEncoder.encode(users.getPassCode());
+        userToDb.setUserId(genUserId);
+        userToDb.setUserName(users.getUserName());
+        userToDb.setPassCode("{bcrypt}" + encodedPasscode);
+        userToDb.setEnabled(users.getEnabled());
+        userToDb.setUserEmail(users.getUserEmail());
+        userToDb.setUserPhone(users.getUserPhone());
+        userToDb.setUserAddress(users.getUserAddress());
+
+        return userRepository.save(userToDb);
+    }
+
+    private void validateUser(Users users) {
         if(users.getUserName() == null || users.getUserName().isEmpty()){
             throw new FieldRequired("User name is required.");
         }
@@ -42,31 +61,28 @@ public class UserService {
         }
 
         boolean isValid = validateEmail(users.getUserEmail());
-        if (isValid == false){
+        if (!isValid){
             throw new NotValidEmail("Email is not valid - " + users.getUserEmail());
         }
-
-        String email = users.getUserEmail();
-        int index = email.indexOf('@');
-        String genUserId = email.substring(0,index).toUpperCase();
 
         Users emailAlreadyExist = userRepository.getUsersByUserEmail(users.getUserEmail());
         System.out.println(emailAlreadyExist);
         if(emailAlreadyExist.getUserEmail() != null || !emailAlreadyExist.getUserEmail().isEmpty()){
             throw new RecordAlreadyExist("Email Already exist - " + users.getUserEmail());
         }
+    }
 
-        Users userToDb = new Users();
-        String encodedPasscode = this.passwordEncoder.encode(users.getPassCode());
-        userToDb.setUserId(genUserId);
-        userToDb.setUserName(users.getUserName());
-        userToDb.setPassCode("{bcrypt}" + encodedPasscode);
-        userToDb.setEnabled(users.getEnabled());
-        userToDb.setUserEmail(users.getUserEmail());
-        userToDb.setUserPhone(users.getUserPhone());
-        userToDb.setUserAddress(users.getUserAddress());
+    public Users updateUser(Users users){
 
-        return userRepository.save(userToDb);
+        validateUser(users);
+
+        Users dbUser = userRepository.findById(users.getUserId()).orElseThrow();
+
+        dbUser.setUserName(users.getUserName());
+        dbUser.setUserPhone(users.getUserPhone());
+        dbUser.setUserAddress(users.getUserAddress());
+
+        return userRepository.save(users);
     }
 
 }

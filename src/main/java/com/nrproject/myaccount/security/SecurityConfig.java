@@ -58,6 +58,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"api/user/allUsers").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.POST,"/api/userRole/addUserRole").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/api/income/session").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET,"/api/recint/allrecint").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/recint/recint/**").hasRole("ADMIN")
         )
                 .httpBasic(Customizer.withDefaults()) // use HTTP Basic auth
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
