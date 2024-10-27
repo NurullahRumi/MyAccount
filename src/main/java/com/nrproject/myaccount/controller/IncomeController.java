@@ -3,9 +3,7 @@ package com.nrproject.myaccount.controller;
 import com.nrproject.myaccount.entity.Income;
 import com.nrproject.myaccount.exception.custom.NotFoundException;
 import com.nrproject.myaccount.service.IncomeService;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

@@ -1,7 +1,5 @@
 package com.nrproject.myaccount.exception;
 
-
-import com.nrproject.myaccount.exception.custom.DataTypeMismatchException;
 import com.nrproject.myaccount.exception.custom.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

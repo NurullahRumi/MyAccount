@@ -1,7 +1,7 @@
 package com.nrproject.myaccount.service;
 
 import com.nrproject.myaccount.entity.Users;
-import com.nrproject.myaccount.exception.custom.NotFoundException;
+import com.nrproject.myaccount.exception.custom.FieldRequired;
 import com.nrproject.myaccount.exception.custom.NotValidEmail;
 import com.nrproject.myaccount.exception.custom.RecordAlreadyExist;
 import com.nrproject.myaccount.repo.UserRepository;
@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static com.nrproject.myaccount.constant.EntityConstant.validateEmail;
 
@@ -29,6 +28,18 @@ public class UserService {
     }
 
     public Users addUser(Users users){
+
+        if(users.getUserName() == null || users.getUserName().isEmpty()){
+            throw new FieldRequired("User name is required.");
+        }
+
+        if(users.getPassCode() == null || users.getPassCode().isEmpty()){
+            throw new FieldRequired("Password is required.");
+        }
+
+        if(users.getUserEmail() == null || users.getUserEmail().isEmpty()){
+            throw new FieldRequired("Email is required.");
+        }
 
         boolean isValid = validateEmail(users.getUserEmail());
         if (isValid == false){
