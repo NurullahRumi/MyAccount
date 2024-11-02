@@ -17,7 +17,7 @@ public class ReceivedInterest {
     @Column(name = "rec_int_source")
     private String recIntSource;
     @Column(name = "rec_int_amount")
-    private float recIntAmount;
+    private Float recIntAmount;
     @Column(name = "remarks")
     private String recIntRemarks;
     @Column(name = "created_by")
@@ -66,11 +66,11 @@ public class ReceivedInterest {
         this.recIntSource = recIntSource;
     }
 
-    public float getRecIntAmount() {
+    public Float getRecIntAmount() {
         return recIntAmount;
     }
 
-    public void setRecIntAmount(float recIntAmount) {
+    public void setRecIntAmount(Float recIntAmount) {
         this.recIntAmount = recIntAmount;
     }
 
